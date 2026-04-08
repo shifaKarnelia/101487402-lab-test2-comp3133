@@ -1,0 +1,65 @@
+<a mat-stroked-button routerLink="/" class="back-link">Back to Character List</a>
+
+@if (isLoading()) {
+  <div class="loading-state">
+    <mat-spinner diameter="54" />
+  </div>
+} @else if (errorMessage()) {
+  <section class="message-card">
+    <h2>Character not available</h2>
+    <p>{{ errorMessage() }}</p>
+  </section>
+} @else {
+  @if (character(); as character) {
+    <mat-card class="details-card">
+      <div class="details-layout">
+        <div class="poster-wrap">
+          <img
+            [src]="character.image || 'https://placehold.co/700x900?text=No+Image'"
+            [alt]="character.name"
+          />
+        </div>
+
+        <div class="details-copy">
+          <p class="eyebrow">{{ character.house || 'No house' }}</p>
+          <h1>{{ character.name }}</h1>
+          <p class="subline">{{ character.species }} • {{ character.actor }}</p>
+
+          <mat-divider />
+
+          <div class="detail-grid">
+            <div>
+              <h2>Wizard</h2>
+              <p>{{ character.wizard ? 'Yes' : 'No' }}</p>
+            </div>
+            <div>
+              <h2>Ancestry</h2>
+              <p>{{ character.ancestry || 'Unknown' }}</p>
+            </div>
+            <div>
+              <h2>Wand Wood</h2>
+              <p>{{ character.wand.wood }}</p>
+            </div>
+            <div>
+              <h2>Wand Core</h2>
+              <p>{{ character.wand.core }}</p>
+          </div>
+            <div>
+              <h2>Wand Length</h2>
+              <p>{{ character.wand.length ?? 'Unknown' }}</p>
+            </div>
+            <div>
+              <h2>Patronus</h2>
+              <p>{{ character.patronus || 'Unknown' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-card>
+  } @else {
+    <section class="message-card">
+      <h2>Character not found</h2>
+      <p>The selected character could not be loaded from the API.</p>
+    </section>
+  }
+}

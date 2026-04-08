@@ -1,0 +1,60 @@
+<section class="hero">
+  <div>
+    <p class="eyebrow">COMP3133 Lab Test 2</p>
+    <h1>Harry Potter Character Directory</h1>
+    <p class="intro">
+      Browse every character, filter them by house, and open a full profile with wand and actor
+      details.
+    </p>
+  </div>
+
+  <app-characterfilter (houseChange)="onHouseChange($event)" />
+</section>
+
+<div class="results-meta">
+  <mat-chip-set>
+    <mat-chip>{{ selectedHouse() }}</mat-chip>
+  </mat-chip-set>
+</div>
+
+@if (isLoading()) {
+  <div class="loading-state">
+    <mat-spinner diameter="54" />
+  </div>
+} @else if (errorMessage()) {
+  <section class="message-card">
+    <h2>Something went wrong</h2>
+    <p>{{ errorMessage() }}</p>
+  </section>
+} @else {
+  @if (characters().length) {
+    <section class="character-grid">
+      @for (character of characters(); track trackByCharacterId($index, character)) {
+        <mat-card class="character-card">
+          <div class="image-wrap">
+            <img
+              [src]="character.image || 'https://placehold.co/600x800?text=No+Image'"
+              [alt]="character.name"
+            />
+          </div>
+
+          <mat-card-content>
+            <h2>{{ character.name }}</h2>
+            <p class="house">{{ character.house || 'No house assigned' }}</p>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <button mat-flat-button type="button" (click)="showDetails(character.id)">
+              View Details
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </section>
+  } @else {
+    <section class="message-card">
+      <h2>No characters found</h2>
+      <p>Try switching to a different house filter.</p>
+    </section>
+  }
+}
